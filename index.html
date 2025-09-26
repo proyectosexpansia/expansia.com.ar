@@ -223,42 +223,44 @@
   </section>
 
   <!-- CONTACTO -->
-  <section id="contacto" class="section alt">
-    <div class="container contact-grid">
-
-        <h2>¡Conectemos!</h2>
-       <p class="muted">
-  ¿Querés invertir, expandir tu marca o potenciar tu desarrollo? Conversemos y veamos cómo aportar valor a tu proyecto.
-</p>
- <p><strong>Email:</strong> <a href="mailto:proyectos@expansia.com.ar">proyectos@expansia.com.ar</a></p>
-      </div>
-    <form name="contacto" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/gracias.html" class="card">
-  <input type="hidden" name="form-name" value="contacto">
-  <p class="sr-only">
-    <label>No completar: <input name="bot-field"></label>
-  </p>
-
-  <h3 class="form-title">Dejanos tu consulta</h3>
-  <div class="form-grid">
-    <input type="text" name="nombre" placeholder="Nombre y apellido" required>
-    <input type="email" name="email" placeholder="Email" required>
-    <input type="text" name="empresa" placeholder="Empresa / Marca">
-    <select name="interes">
-      <option>Inversión & Capital Estratégico</option>
-      <option>Expansión & Retail</option>
-      <option>Logística & Centros de Distribución</option>
-      <option>Oficinas</option>
-      <option>Desarrollo</option>
-      <option>Asset Management</option>
-    </select>
-    <textarea rows="4" name="mensaje" placeholder="Contanos brevemente tu necesidad"></textarea>
-    <button class="btn btn-primary" type="submit">Enviar</button>
-  </div>
-</form>
-
-
+<section id="contacto" class="section alt">
+  <div class="container contact-grid">
+    <div>
+      <h2>¡Conectemos!</h2>
+      <p class="muted">
+        ¿Querés invertir, expandir tu marca o potenciar tu desarrollo?
+        Conversemos y veamos cómo aportar valor a tu proyecto.
+      </p>
+      <p><strong>Email:</strong> <a href="mailto:proyectos@expansia.com.ar">proyectos@expansia.com.ar</a></p>
     </div>
-  </section>
+
+    <!-- FORM Netlify (dentro del mismo .container) -->
+    <form name="contacto" method="POST" data-netlify="true"
+          netlify-honeypot="bot-field" action="/gracias.html" class="card">
+      <input type="hidden" name="form-name" value="contacto">
+      <p class="sr-only">
+        <label>No completar: <input name="bot-field"></label>
+      </p>
+
+      <h3 class="form-title">Dejanos tu consulta</h3>
+      <div class="form-grid">
+        <input type="text" name="nombre" placeholder="Nombre y apellido" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="text" name="empresa" placeholder="Empresa / Marca">
+        <select name="interes">
+          <option>Inversión & Capital Estratégico</option>
+          <option>Expansión & Retail</option>
+          <option>Logística & Centros de Distribución</option>
+          <option>Oficinas</option>
+          <option>Desarrollo</option>
+          <option>Asset Management</option>
+        </select>
+        <textarea rows="4" name="mensaje" placeholder="Contanos brevemente tu necesidad"></textarea>
+        <button class="btn btn-primary" type="submit">Enviar</button>
+      </div>
+    </form>
+  </div>
+</section>
 
 
 <!-- ICONOS DE CONTACTO -->
