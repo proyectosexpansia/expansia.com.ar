@@ -232,8 +232,12 @@
 </p>
  <p><strong>Email:</strong> <a href="mailto:proyectos@expansia.com.ar">proyectos@expansia.com.ar</a></p>
       </div>
-     <form name="contacto" method="POST" data-netlify="true" class="card">
+    <form name="contacto" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/gracias.html" class="card">
   <input type="hidden" name="form-name" value="contacto">
+  <p class="sr-only">
+    <label>No completar: <input name="bot-field"></label>
+  </p>
+
   <h3 class="form-title">Dejanos tu consulta</h3>
   <div class="form-grid">
     <input type="text" name="nombre" placeholder="Nombre y apellido" required>
@@ -251,6 +255,7 @@
     <button class="btn btn-primary" type="submit">Enviar</button>
   </div>
 </form>
+
 
     </div>
   </section>
