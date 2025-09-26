@@ -225,6 +225,8 @@ input,textarea,select{
   padding:20px 0;display:flex;justify-content:center;align-items:center;
   font-size:14px;text-align:center
 }
+.footer-copy{ margin:0; width:100%; }
+
 
 /* ========================================================================= */
 /* RESPONSIVE                                                                */
