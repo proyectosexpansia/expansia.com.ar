@@ -28,6 +28,10 @@ strong{font-weight:700;color:var(--primary-color)}
 .section.alt{background:var(--bg-alt)}
 .card{background:#fff;border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);padding:20px}
 
+html, body { overflow-x: hidden; } /* evita scroll horizontal inesperado */
+img, video { max-width: 100%; height: auto; } /* nunca más ancho que la pantalla */
+
+
 /* ========================================================================= */
 /* HEADER / NAV                                                              */
 /* ========================================================================= */
@@ -304,6 +308,25 @@ input,textarea,select{
   gap: 12px;             /* separación uniforme entre inputs */
 }
 
+/* Grid de contacto — 2 col en desktop, 1 col en mobile */
+.contact-grid{
+  display: grid;
+  gap: 24px;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+}
+
+@media (max-width: 900px){
+  .contact-grid{ grid-template-columns: 1fr; }
+}
+
+/* Campos y botón full width, cómodos en mobile */
+#contacto .card { padding: 20px; }
+#contacto input, #contacto select, #contacto textarea { width: 100%; }
+@media (max-width: 760px){
+  #contacto .btn { width: 100%; }
+}
+
 
 /* ========================================================================= */
 /* ICONOS DE CONTACTO (con Font Awesome)                                     */
@@ -326,4 +349,18 @@ input,textarea,select{
 .social-inner a:hover{
   transform:scale(1.2);
   color:var(--accent);     /* turquesa al hover */
+}
+
+
+/* Evitar que títulos o grids empujen de más en pantallas chicas */
+@media (max-width: 380px){
+  .intro-title{ font-size: clamp(34px, 8vw, 42px); }
+  .choices-grid{ grid-template-columns: 1fr; }
+  .grid-3{ grid-template-columns: 1fr; }
+}
+
+/* Logos: que no desborden en móvil */
+.logo-item img { max-width: 140px; height: auto; }
+@media (max-width: 520px){
+  .logo-item img { max-width: 120px; }
 }
