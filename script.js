@@ -2,7 +2,6 @@
    Expansia – Front JS
    Conecta interacciones de UI y deja hooks listos para backend
    =========================================================== */
-
 (function () {
   "use strict";
 
@@ -43,11 +42,7 @@
     const headerOffset = getHeaderHeight() + 8; // pequeño margen
     const rect = targetEl.getBoundingClientRect();
     const offsetTop = window.pageYOffset + rect.top - headerOffset;
-
-    window.scrollTo({
-      top: offsetTop,
-      behavior: "smooth",
-    });
+    window.scrollTo({ top: offsetTop, behavior: "smooth" });
   };
 
   const getUTMs = () => {
@@ -84,12 +79,15 @@
 
     toggle.addEventListener("click", () => {
       nav.classList.toggle("is-open");
+      const expanded = toggle.getAttribute("aria-expanded") === "true";
+      toggle.setAttribute("aria-expanded", String(!expanded));
     });
 
     // Cerrar nav al hacer click en un link
     nav.addEventListener("click", (e) => {
       if (e.target.tagName.toLowerCase() === "a") {
         nav.classList.remove("is-open");
+        toggle.setAttribute("aria-expanded", "false");
       }
     });
   };
@@ -177,34 +175,53 @@
 
   /* -----------------------------------------
    * 6) Formulario de contacto
-   * - Validación simple
-   * - Guarda últimos datos en localStorage
-   * - Hook preparado para POST a API cuando esté el dominio
+   *    Compatible con Netlify Forms (NO interceptar)
+   *    - Si el <form> tiene data-netlify="true", no se hace preventDefault
+   *    - Prefill suave desde localStorage
+   *    - Hook opcional a backend propio si ENABLE_NETWORK = true
    * ----------------------------------------- */
   const initContactForm = () => {
     const form = $("#contacto form");
     if (!form) return;
 
+    const isNetlify = form.hasAttribute("data-netlify");
+
+    // Asegurar hidden form-name para Netlify si faltara
+    if (isNetlify && !form.querySelector('input[name="form-name"]')) {
+      const hidden = document.createElement("input");
+      hidden.type = "hidden";
+      hidden.name = "form-name";
+      hidden.value = form.getAttribute("name") || "contacto";
+      form.prepend(hidden);
+    }
+
     // Prefill con datos previos (si existen)
     const last = storage.get("expansia_form", {});
-    const [nameI, emailI, companyI, interestS, messageT] = form.querySelectorAll(
-      "input, select, textarea"
-    );
-    if (last.name) nameI.value = last.name;
-    if (last.email) emailI.value = last.email;
-    if (last.company) companyI.value = last.company;
-    if (last.interest) interestS.value = last.interest;
-    if (last.message) messageT.value = last.message;
+    const nameI    = form.querySelector('[name="nombre"], [name="name"]');
+    const emailI   = form.querySelector('[name="email"]');
+    const companyI = form.querySelector('[name="empresa"], [name="company"]');
+    const interestS= form.querySelector('[name="interes"], [name="interest"]');
+    const messageT = form.querySelector('[name="mensaje"], [name="message"]');
 
+    if (last.name && nameI) nameI.value = last.name;
+    if (last.email && emailI) emailI.value = last.email;
+    if (last.company && companyI) companyI.value = last.company;
+    if (last.interest && interestS) interestS.value = last.interest;
+    if (last.message && messageT) messageT.value = last.message;
+
+    // Si es Netlify Forms → NO interceptar submit (dejar que envíe normal)
+    if (isNetlify) return;
+
+    // Si no es Netlify, usamos el flujo local/propio
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
       const data = {
-        name: nameI.value.trim(),
-        email: emailI.value.trim(),
-        company: companyI.value.trim(),
-        interest: interestS.value,
-        message: messageT.value.trim(),
+        name: nameI?.value?.trim() || "",
+        email: emailI?.value?.trim() || "",
+        company: companyI?.value?.trim() || "",
+        interest: interestS?.value || "",
+        message: messageT?.value?.trim() || "",
         utm: storage.get("expansia_utm", {}),
         timestamp: new Date().toISOString(),
         page: window.location.href,
@@ -273,7 +290,7 @@
     initScrollSpy();
     initYear();
     initUTMTracking();
-    initContactForm();
+    initContactForm(); // <- ahora respeta Netlify Forms
     initLazyLogos();
   });
 })();
