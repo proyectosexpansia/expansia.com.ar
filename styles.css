@@ -364,3 +364,26 @@ input,textarea,select{
 @media (max-width: 520px){
   .logo-item img { max-width: 120px; }
 }
+
+/* Fix footer en mobile */
+.site-footer .footer-inner{
+  padding: 20px 16px;       /* margen lateral para que no pegue contra el borde */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;          /* << permite salto de línea */
+  gap: 6px;
+  text-align: center;       /* centra el texto */
+}
+
+.site-footer .footer-inner{
+  overflow-wrap: anywhere;  /* << evita desborde en palabras largas */
+  word-break: break-word;
+}
+
+@media (max-width: 480px){
+  .site-footer .footer-inner{
+    font-size: 13px;        /* un toque más chico en celus muy angostos */
+    line-height: 1.4;
+  }
+}
