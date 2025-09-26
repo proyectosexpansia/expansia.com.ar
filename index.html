@@ -7,6 +7,7 @@
   <meta name="description" content="Estrategia, Inversión & Ejecución en Real Estate Comercial. Conectamos inversores, marcas y desarrolladores con oportunidades que convierten proyectos en operaciones."/>
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" href="assets/favicon.png" type="image/png">
 
 </head>
 <body>
@@ -231,24 +232,26 @@
 </p>
  <p><strong>Email:</strong> <a href="mailto:proyectos@expansia.com.ar">proyectos@expansia.com.ar</a></p>
       </div>
-      <form class="card" onsubmit="event.preventDefault(); alert('¡Gracias! Te contactaremos a la brevedad.');">
-        <h3 style="margin-top:0">Dejanos tu consulta</h3>
-        <div style="display:grid;gap:10px">
-          <input required placeholder="Nombre y apellido">
-          <input required type="email" placeholder="Email">
-          <input placeholder="Empresa / Marca">
-          <select>
-            <option>Interés: Inversión & Capital Estratégico</option>
-            <option>Interés: Expansión & Retail</option>
-            <option>Interés: Logística & Centros de Distribución</option>
-            <option>Interés: Oficinas</option>
-            <option>Interés: Desarrollo</option>
-            <option>Interés: Asset Management</option>
-          </select>
-          <textarea rows="4" placeholder="Contanos brevemente tu necesidad"></textarea>
-          <button class="btn btn-primary" type="submit">Enviar</button>
-        </div>
-      </form>
+     <form name="contacto" method="POST" data-netlify="true" class="card">
+  <input type="hidden" name="form-name" value="contacto">
+  <h3 class="form-title">Dejanos tu consulta</h3>
+  <div class="form-grid">
+    <input type="text" name="nombre" placeholder="Nombre y apellido" required>
+    <input type="email" name="email" placeholder="Email" required>
+    <input type="text" name="empresa" placeholder="Empresa / Marca">
+    <select name="interes">
+      <option>Inversión & Capital Estratégico</option>
+      <option>Expansión & Retail</option>
+      <option>Logística & Centros de Distribución</option>
+      <option>Oficinas</option>
+      <option>Desarrollo</option>
+      <option>Asset Management</option>
+    </select>
+    <textarea rows="4" name="mensaje" placeholder="Contanos brevemente tu necesidad"></textarea>
+    <button class="btn btn-primary" type="submit">Enviar</button>
+  </div>
+</form>
+
     </div>
   </section>
 
