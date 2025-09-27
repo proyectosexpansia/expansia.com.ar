@@ -234,17 +234,27 @@
       <p><strong>Email:</strong> <a href="mailto:proyectos@expansia.com.ar">proyectos@expansia.com.ar</a></p>
     </div>
 
-    <!-- FORM Netlify (dentro del mismo .container) -->
-  <form name="contacto" method="POST" netlify data-netlify="true" class="card">
+  <form id="contact-form" name="contacto" method="POST" netlify data-netlify="true" class="card">
   <input type="hidden" name="form-name" value="contacto">
 
   <h3 class="form-title" style="margin-top:0">Dejanos tu consulta</h3>
   <div class="form-grid" style="display:grid;gap:12px">
-    <input type="text"  name="nombre" placeholder="Nombre y apellido" required>
-    <input type="email" name="email"  placeholder="Email" required>
+    <input type="text"  name="nombre"  placeholder="Nombre y apellido" required>
+    <input type="email" name="email"   placeholder="Email" required>
+    <input type="text"  name="empresa" placeholder="Empresa / Marca">
+    <select name="interes">
+      <option>Inversión & Capital Estratégico</option>
+      <option>Expansión & Retail</option>
+      <option>Logística & Centros de Distribución</option>
+      <option>Oficinas</option>
+      <option>Desarrollo</option>
+      <option>Asset Management</option>
+    </select>
+    <textarea rows="4" name="mensaje" placeholder="Contanos brevemente tu necesidad"></textarea>
     <button class="btn btn-primary" type="submit">Enviar</button>
   </div>
 </form>
+
 
   </div>
 </section>
