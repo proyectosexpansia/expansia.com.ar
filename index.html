@@ -235,12 +235,13 @@
     </div>
 
     <!-- FORM Netlify (dentro del mismo .container) -->
-    <form name="contacto" method="POST" netlify data-netlify="true" class="card">
+  <form name="contacto" method="POST" netlify data-netlify="true" class="card">
   <input type="hidden" name="form-name" value="contacto">
+
   <h3 class="form-title" style="margin-top:0">Dejanos tu consulta</h3>
   <div class="form-grid" style="display:grid;gap:12px">
-    <input type="text" name="nombre" placeholder="Nombre y apellido" required>
-    <input type="email" name="email" placeholder="Email" required>
+    <input type="text"  name="nombre" placeholder="Nombre y apellido" required>
+    <input type="email" name="email"  placeholder="Email" required>
     <button class="btn btn-primary" type="submit">Enviar</button>
   </div>
 </form>
@@ -280,12 +281,7 @@
   <script src="script.js" defer></script>
 
 
-  <!-- Ghost form para Netlify (no visible, solo para detección) -->
-<form name="contacto" netlify data-netlify="true" hidden>
-  <input type="hidden" name="form-name" value="contacto">
-  <input type="text" name="nombre">
-  <input type="email" name="email">
-</form>
+
 
 
 </body>
