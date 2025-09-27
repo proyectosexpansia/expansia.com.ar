@@ -224,7 +224,7 @@
 
   <!-- CONTACTO -->
 <section id="contacto" class="section alt">
-  <div class="container contact-grid">
+  <div class="container contact-grid" style="display:grid;gap:24px;grid-template-columns:1fr 1fr;align-items:start">
     <div>
       <h2>¡Conectemos!</h2>
       <p class="muted">
@@ -242,8 +242,8 @@
         <label>No completar: <input name="bot-field"></label>
       </p>
 
-      <h3 class="form-title">Dejanos tu consulta</h3>
-      <div class="form-grid">
+      <h3 class="form-title" style="margin-top:0">Dejanos tu consulta</h3>
+      <div class="form-grid" style="display:grid;gap:12px">
         <input type="text" name="nombre" placeholder="Nombre y apellido" required>
         <input type="email" name="email" placeholder="Email" required>
         <input type="text" name="empresa" placeholder="Empresa / Marca">
@@ -261,6 +261,7 @@
     </form>
   </div>
 </section>
+
 
 
 <!-- ICONOS DE CONTACTO -->
@@ -291,6 +292,23 @@
 
   <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
   <script src="script.js" defer></script>
+
+
+  <!-- Ghost form para Netlify (no visible, solo para detección) -->
+<form name="contacto" netlify data-netlify="true" netlify-honeypot="bot-field" hidden>
+  <input type="text" name="nombre">
+  <input type="email" name="email">
+  <input type="text" name="empresa">
+  <select name="interes">
+    <option>Inversión & Capital Estratégico</option>
+    <option>Expansión & Retail</option>
+    <option>Logística & Centros de Distribución</option>
+    <option>Oficinas</option>
+    <option>Desarrollo</option>
+    <option>Asset Management</option>
+  </select>
+  <textarea name="mensaje"></textarea>
+</form>
 
 </body>
 </html>
