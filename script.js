@@ -294,3 +294,40 @@
     initLazyLogos();
   });
 })();
+
+
+// ===== Netlify Forms: envío forzado del formulario "contacto" =====
+(function () {
+  const form = document.getElementById('contact-form');
+  if (!form) return;
+
+  // Convierte FormData a application/x-www-form-urlencoded
+  const encode = (data) =>
+    Array.from(data.keys())
+      .map((key) => encodeURIComponent(key) + '=' + encodeURIComponent(data.get(key)))
+      .join('&');
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault(); // evitamos el submit nativo
+
+    const data = new FormData(form);
+
+    // Asegurar que Netlify reciba el nombre del formulario
+    if (!data.get('form-name')) {
+      data.append('form-name', form.getAttribute('name') || 'contacto');
+    }
+
+    fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: encode(data),
+    })
+      .then(() => {
+        // redirigimos a la página de gracias cuando todo ok
+        window.location.href = '/gracias.html';
+      })
+      .catch(() => {
+        alert('No pudimos enviar tu consulta. Probá de nuevo en unos minutos.');
+      });
+  });
+})();
