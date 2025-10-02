@@ -115,19 +115,18 @@
    * ----------------------------------------- */
   const initScrollSpy = () => {
     const sections = [
-      "#quienes-somos",
-      "#servicios",
-      "#inversores",
-      "#expansion",
-      "#logistica",
-      "#oficinas",
-      "#desarrollo",
-      "#asset-management",
-      "#marcas",
-      "#contacto",
-    ]
-      .map((id) => $(id))
-      .filter(Boolean);
+  "#quienes-somos",
+  "#como-generamos-valor",
+  "#inversores",
+  "#expansion",
+  "#asset-management",
+  "#desarrollo",
+  "#logistica",
+  "#oficinas",
+  "#marcas",
+  "#contacto",
+].map(id => $(id)).filter(Boolean);
+
 
     const navLinks = new Map();
     $$(".nav a").forEach((a) => {
