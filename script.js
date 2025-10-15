@@ -9,16 +9,16 @@
    * Config – editar cuando se conecte el dominio
    * ----------------------------------------- */
   const CONFIG = {
-    DOMAIN: "https://www.expansia.com.ar",      // <-- cambiar cuando esté online
-    API_BASE: "https://www.expansia.com.ar/api",// <-- ejemplo; ajustar
-    CONTACT_ENDPOINT: "/contact",               // POST JSON {name,email,company,interest,message,utm}
-    ENABLE_NETWORK: false,                      // poner true cuando el endpoint esté listo
+    DOMAIN: "https://www.expansia.com.ar",
+    API_BASE: "https://www.expansia.com.ar/api",
+    CONTACT_ENDPOINT: "/contact",
+    ENABLE_NETWORK: false,
   };
 
   /* -----------------------------------------
    * Helpers
    * ----------------------------------------- */
-  const $ = (sel, ctx = document) => ctx.querySelector(sel);
+  const $  = (sel, ctx = document) => ctx.querySelector(sel);
   const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
 
   const throttle = (fn, wait = 150) => {
@@ -39,7 +39,7 @@
   };
 
   const smoothScrollTo = (targetEl) => {
-    const headerOffset = getHeaderHeight() + 8; // pequeño margen
+    const headerOffset = getHeaderHeight() + 8;
     const rect = targetEl.getBoundingClientRect();
     const offsetTop = window.pageYOffset + rect.top - headerOffset;
     window.scrollTo({ top: offsetTop, behavior: "smooth" });
@@ -48,7 +48,7 @@
   const getUTMs = () => {
     const params = new URLSearchParams(window.location.search);
     const utm = {};
-    ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"].forEach((k) => {
+    ["utm_source","utm_medium","utm_campaign","utm_content","utm_term"].forEach((k) => {
       const v = params.get(k);
       if (v) utm[k] = v;
     });
@@ -60,12 +60,12 @@
       try {
         const raw = localStorage.getItem(key);
         return raw ? JSON.parse(raw) : fallback;
-      } catch (e) { return fallback; }
+      } catch { return fallback; }
     },
     set(key, value) {
       try {
         localStorage.setItem(key, JSON.stringify(value));
-      } catch (e) { /* nada */ }
+      } catch {}
     },
   };
 
@@ -83,7 +83,6 @@
       toggle.setAttribute("aria-expanded", String(!expanded));
     });
 
-    // Cerrar nav al hacer click en un link
     nav.addEventListener("click", (e) => {
       if (e.target.tagName.toLowerCase() === "a") {
         nav.classList.remove("is-open");
@@ -115,18 +114,17 @@
    * ----------------------------------------- */
   const initScrollSpy = () => {
     const sections = [
-  "#quienes-somos",
-  "#como-generamos-valor",
-  "#inversores",
-  "#expansion",
-  "#asset-management",
-  "#desarrollo",
-  "#logistica",
-  "#oficinas",
-  "#marcas",
-  "#contacto",
-].map(id => $(id)).filter(Boolean);
-
+      "#quienes-somos",
+      "#como-generamos-valor",
+      "#inversores",
+      "#expansion",
+      "#asset-management",
+      "#desarrollo",
+      "#logistica",
+      "#oficinas",
+      "#marcas",
+      "#contacto",
+    ].map(id => $(id)).filter(Boolean);
 
     const navLinks = new Map();
     $$(".nav a").forEach((a) => {
@@ -163,55 +161,48 @@
   };
 
   /* -----------------------------------------
-   * 5) UTM tracking (guarda en localStorage)
+   * 5) UTM tracking
    * ----------------------------------------- */
   const initUTMTracking = () => {
     const utm = getUTMs();
-    if (Object.keys(utm).length) {
-      storage.set("expansia_utm", utm);
-    }
+    if (Object.keys(utm).length) storage.set("expansia_utm", utm);
   };
 
   /* -----------------------------------------
-   * 6) Formulario de contacto
-   *    Compatible con Netlify Forms (NO interceptar)
-   *    - Si el <form> tiene data-netlify="true", no se hace preventDefault
-   *    - Prefill suave desde localStorage
-   *    - Hook opcional a backend propio si ENABLE_NETWORK = true
+   * 6) Formulario de contacto (Netlify-friendly)
    * ----------------------------------------- */
   const initContactForm = () => {
     const form = $("#contacto form");
     if (!form) return;
 
-    const isNetlify = form.hasAttribute("data-netlify");
-
-    // Asegurar hidden form-name para Netlify si faltara
-    if (isNetlify && !form.querySelector('input[name="form-name"]')) {
-      const hidden = document.createElement("input");
-      hidden.type = "hidden";
-      hidden.name = "form-name";
-      hidden.value = form.getAttribute("name") || "contacto";
-      form.prepend(hidden);
+    // si el form es de Netlify, NO lo interceptamos
+    const isNetlify = form.hasAttribute("data-netlify") || form.hasAttribute("netlify");
+    if (isNetlify) {
+      // asegurar hidden form-name por si faltara
+      if (!form.querySelector('input[name="form-name"]')) {
+        const hidden = document.createElement("input");
+        hidden.type = "hidden";
+        hidden.name = "form-name";
+        hidden.value = form.getAttribute("name") || "contacto";
+        form.prepend(hidden);
+      }
+      // prefill suave (no toca el submit)
+      const last = storage.get("expansia_form", {});
+      form.querySelector('[name="nombre"], [name="name"]')?.value   ||= last.name    || "";
+      form.querySelector('[name="email"]')?.value                   ||= last.email   || "";
+      form.querySelector('[name="empresa"], [name="company"]')?.value ||= last.company || "";
+      form.querySelector('[name="interes"], [name="interest"]')?.value ||= last.interest || "";
+      form.querySelector('[name="mensaje"], [name="message"]')?.value ||= last.message || "";
+      return; // dejamos que Netlify haga POST + redirect
     }
 
-    // Prefill con datos previos (si existen)
-    const last = storage.get("expansia_form", {});
+    // flujo alternativo (cuando NO se usa Netlify)
     const nameI    = form.querySelector('[name="nombre"], [name="name"]');
     const emailI   = form.querySelector('[name="email"]');
     const companyI = form.querySelector('[name="empresa"], [name="company"]');
     const interestS= form.querySelector('[name="interes"], [name="interest"]');
     const messageT = form.querySelector('[name="mensaje"], [name="message"]');
 
-    if (last.name && nameI) nameI.value = last.name;
-    if (last.email && emailI) emailI.value = last.email;
-    if (last.company && companyI) companyI.value = last.company;
-    if (last.interest && interestS) interestS.value = last.interest;
-    if (last.message && messageT) messageT.value = last.message;
-
-    // Si es Netlify Forms → NO interceptar submit (dejar que envíe normal)
-    if (isNetlify) return;
-
-    // Si no es Netlify, usamos el flujo local/propio
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
@@ -226,26 +217,15 @@
         page: window.location.href,
       };
 
-      // Validación mínima
       const errors = [];
       if (!data.name) errors.push("Ingresá tu nombre");
-      if (!data.email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(data.email))
-        errors.push("Ingresá un email válido");
-      if (errors.length) {
-        alert("Revisá el formulario:\n• " + errors.join("\n• "));
-        return;
-      }
+      if (!data.email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(data.email)) errors.push("Ingresá un email válido");
+      if (errors.length) { alert("Revisá el formulario:\n• " + errors.join("\n• ")); return; }
 
-      // Persistimos localmente para UX
       storage.set("expansia_form", {
-        name: data.name,
-        email: data.email,
-        company: data.company,
-        interest: data.interest,
-        message: data.message,
+        name: data.name, email: data.email, company: data.company, interest: data.interest, message: data.message,
       });
 
-      // Hook para backend – activar cuando esté el endpoint
       if (CONFIG.ENABLE_NETWORK) {
         try {
           const res = await fetch(CONFIG.API_BASE + CONFIG.CONTACT_ENDPOINT, {
@@ -264,14 +244,13 @@
         }
       }
 
-      // Modo sin backend (placeholder)
       alert("¡Gracias! Te contactaremos a la brevedad.");
       form.reset();
     });
   };
 
   /* -----------------------------------------
-   * 7) Lazy de logos (pequeño plus de rendimiento)
+   * 7) Lazy de logos
    * ----------------------------------------- */
   const initLazyLogos = () => {
     $$("section#marcas img").forEach((img) => {
@@ -289,44 +268,7 @@
     initScrollSpy();
     initYear();
     initUTMTracking();
-    initContactForm(); // <- ahora respeta Netlify Forms
+    initContactForm();
     initLazyLogos();
-  });
-})();
-
-
-// ===== Netlify Forms: envío forzado del formulario "contacto" =====
-(function () {
-  const form = document.getElementById('contact-form');
-  if (!form) return;
-
-  // Convierte FormData a application/x-www-form-urlencoded
-  const encode = (data) =>
-    Array.from(data.keys())
-      .map((key) => encodeURIComponent(key) + '=' + encodeURIComponent(data.get(key)))
-      .join('&');
-
-  form.addEventListener('submit', function (e) {
-    e.preventDefault(); // evitamos el submit nativo
-
-    const data = new FormData(form);
-
-    // Asegurar que Netlify reciba el nombre del formulario
-    if (!data.get('form-name')) {
-      data.append('form-name', form.getAttribute('name') || 'contacto');
-    }
-
-    fetch('/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: encode(data),
-    })
-      .then(() => {
-        // redirigimos a la página de gracias cuando todo ok
-        window.location.href = '/gracias.html';
-      })
-      .catch(() => {
-        alert('No pudimos enviar tu consulta. Probá de nuevo en unos minutos.');
-      });
   });
 })();
